@@ -1,0 +1,64 @@
+*{
+    font-family: sans-serif;
+    
+}
+.menu{
+    width: 82%;
+    margin: 50px auto;
+}
+
+a{
+    text-decoration: underline;
+    cursor: pointer;
+    color: rgb(226, 125, 0);
+}
+
+.Res-menu-data{
+    font-size: small;
+    margin: 0 auto;
+    width: 95%;
+    font-family: sans-serif;
+    border: 1px solid lightgrey;
+    box-shadow: 0px 25px 30px 0px lightslategrey;
+    border-radius: 20px;
+    padding: 30px;
+}
+.Outlet-container{
+    padding: 5px 30px;
+    font-size: small;
+}
+.outletHeading{
+    font-size: large;
+}
+.outletHeading span{
+    color: grey;
+    margin-left: 20px;
+    font-weight: lighter;
+}
+.delivery-details{
+    padding: 0 30px;
+    color: grey;
+}
+.menu-container{
+    position: relative;
+    justify-content: center;
+    margin: 0 auto;
+}
+.menu-card-container{
+    margin-top: 100px;
+}
+.menu-card{
+    width: 80%;
+    max-width: 1440px;
+    overflow: scroll;
+    scrollbar-width: 500px;
+    display: flex;
+    gap: 10px;
+    
+}
+span{
+    font-weight: lighter;
+}
+.menu-card li{
+    list-style-type: none;
+}
