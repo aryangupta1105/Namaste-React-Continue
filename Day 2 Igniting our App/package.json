@@ -1,0 +1,20 @@
+{
+  "name": "day-2-igniting-our-app",
+  "version": "1.0.0",
+  "description": "This is Namaste React ep02 ",
+  "scripts": {
+    "start": "parcel ./index.html",
+    "build": "parcel build ./index.html",
+    "test": "jest"
+  },
+  "keywords": [],
+  "author": "Aryan",
+  "license": "ISC",
+  "dependencies": {
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "cssnano": "^7.0.1",
+    "postcss": "^8.4.38"
+  } 
+}
