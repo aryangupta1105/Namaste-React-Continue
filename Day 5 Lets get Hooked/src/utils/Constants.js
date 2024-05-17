@@ -5,3 +5,4 @@ export const LOGO_URL = "https://png.pngtree.com/png-vector/20230217/ourmid/pngt
 export const CURR_YEAR = new Date().getFullYear();
 
 export const error_url = '../utils/error.gif';
+export const API_KEY = "6646e117c0bb5374927906cjs465a63";

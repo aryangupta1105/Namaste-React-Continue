@@ -4,41 +4,79 @@ import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import './Body.css';
+import {API_KEY} from "../utils/Constants";
 
 const Body = () => {
-    const [listRestaurants , setListRestaurants] = useState([]);
-    const [filteredRestaurants , setFilteredRestaurants] = useState([]);
-    const [searchValue , setSearchValue] = useState("");
-    const [headingRestaurant , setheadingRestaurant] = useState("Top Restaurant Chains");
+  const [listRestaurants, setListRestaurants] = useState([]);
+  const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  const [searchValue, setSearchValue] = useState("");
+  const [headingRestaurant, setHeadingRestaurant] = useState("Top Restaurant Chains");
+  const [lat, setLat] = useState();
+  const [long, setLong] = useState();
+  const [address, setAddress] = useState("");
+  const [loading, setLoading] = useState(true);
 
-    
-    useEffect(()=>{
-      fetchData();
-    } , []);
-  
-    // function definiton:
-    const fetchData = async ()=>{
-      const data = await fetch(
-        'https://www.swiggy.com/dapi/restaurants/list/v5?lat=22.7195687&lng=75.8577258&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING'
-        
-      );
-      
-      const json = await data.json();
-      console.log(json)
-      const newData = json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants;
-      resLists = newData;
-      setheadingRestaurant(json?.data?.cards[2]?.card?.card?.title)
-      setListRestaurants(newData);   
-      setFilteredRestaurants(newData);
-          };
+  // Fetch data when lat or long changes
+  useEffect(() => {
+    fetchData();
+  }, [lat, long]);
 
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(showPosition);
+    } else {
+      console.log("No geolocation support!");
+    }
+  };
 
+  const showPosition = (position) => {
+    setLat(position.coords.latitude);
+    setLong(position.coords.longitude);
+  };
 
-    // Conditional Rendering
-    if(listRestaurants.length === 0){
-      return <Shimmer></Shimmer>
+  const fetchLatLong = async () => {
+    if (!address) {
+      console.log("Address is empty");
+      return;
     }
 
+    try {
+      const response = await fetch(
+        `https://geocode.maps.co/search?q=${encodeURIComponent(address)}&api_key=${API_KEY}`
+      );
+      const json = await response.json();
+      if (json.length > 0) {
+        setLat(parseFloat(json[0].lat));
+        setLong(parseFloat(json[0].lon));
+      } else {
+        console.log("No results found for the given address.");
+      }
+    } catch (error) {
+      console.error("Error fetching geocoding data: ", error);
+    }
+  };
+
+  const fetchData = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch(
+        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${long}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
+      );
+      const json = await response.json();
+      const newData = json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
+      console.log(json?.data);
+      setHeadingRestaurant(json?.data?.cards[1]?.card?.card?.header?.title || "Top Restaurant Chains");
+      setListRestaurants(newData);
+      setFilteredRestaurants(newData);
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+    setLoading(false);
+  };
+
+  if (loading) {
+    return <Shimmer />;
+  }
     console.log("body rendering");
 
     console.log(listRestaurants);
@@ -46,22 +84,35 @@ const Body = () => {
     return (
       <div className="body">
         <div className="main-container">
-        <h1 className="Heading-body">
-          {headingRestaurant}
+          <div className="top-container">
+          <h1 className="Heading-body">
+          {headingRestaurant} 
         </h1>
-        <div  className="search-container">
-          {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
-          <input type="text" name="search-res" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
-            setSearchValue(e.target.value);
-          }} />
-          {/* Adding search Button functionalities */}
-          <button className="search-btn" onClick={()=>{
+            {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
+          <div>
             
-            console.log(listRestaurants);
-            const filteredList = listRestaurants.filter((res)=> (res.info.name).toLowerCase().includes(searchValue.toLowerCase()) );
-            setFilteredRestaurants(filteredList);
-            console.log(listRestaurants);
-          }} >Search🔍</button>
+                <input type="text" name="search-city" placeholder="Search City " value={address} onChange={(e)=>{
+                  setAddress(e.target.value);
+                }} />
+                {/* Adding search Button functionalities */}
+                <button className="search-btn" onClick={()=>{
+                  fetchLatLong();
+                  
+                }} >Search🔍</button>
+              
+          </div>
+          </div>
+        
+        <div  className="search-container">
+              <input type="text" name="search-res" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
+                      setSearchValue(e.target.value);
+                    }} />
+                    {/* Adding search Button functionalities */}
+                    <button className="search-btn" onClick={()=>{
+                      const filteredList = listRestaurants.filter((res)=> (res.info.name).toLowerCase().includes(searchValue.toLowerCase()) );
+                      setFilteredRestaurants(filteredList);
+                    }} >Search🔍</button>
+
         </div>
         <button className="filter-btn" 
           onClick={() =>{ 
@@ -75,38 +126,19 @@ const Body = () => {
         </div>
         <div className="res-container">
           
-          {
-          /* This is one way to use list 
-           <RestaurantCard resData={resList[0]} />
-          <RestaurantCard resData={resList[1]} />
-          <RestaurantCard resData={resList[2]} />
-          <RestaurantCard resData={resList[3]} />
-          <RestaurantCard resData={resList[4]} />
-          <RestaurantCard resData={resList[5]} />
-          <RestaurantCard resData={resList[6]} />
-          <RestaurantCard resData={resList[7]} />
-          <RestaurantCard resData={resList[8]} />
-          <RestaurantCard resData={resList[9]} />
-          <RestaurantCard resData={resList[10]} />
-          <RestaurantCard resData={resList[11]} />
-          <RestaurantCard resData={resList[12]} /> */}
-  
+          
           {/* // * looping through the <RestaurentCard /> components Using Array.map() method */}
+          {filteredRestaurants.length > 0 ? (
+          filteredRestaurants.map((restaurant) => (
+            <Link className="res-card" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+              <RestaurantCard resData={restaurant} />
+            </Link>
+          ))
+        ) : (
+          <h2>No results found for your Location!</h2>
+        )}
   
-          {filteredRestaurants.map((restaurant) => (
-            <Link className="res-card"  key={restaurant.info.id} to={"/restaurants/" +restaurant.info.id}><RestaurantCard resData={restaurant} /></Link>
-          ))}
-  
-          {/* // * or */}
-  
-          {/* // * We can also use index as the key to the JSX child elemnt - which is the 2nd parameter of the map() method, but is not a recommended practice - react official Docs declared this/}
-  
-          {resList.map((restaurant, index) => (
-            <RestaurantCard key={index} resData={restaurant} />
-          ))}
-  
-          {/* // * Why should we provide key property to the child elements - When creating a list in the UI from an array with JSX, you should add a key prop to each child and to any of its' children. React uses the key prop create a relationship between the component and the DOM element. The library uses this relationship to determine whether or not the component should be re-rendered.
-           */}
+          
         </div>
       </div>
     );
