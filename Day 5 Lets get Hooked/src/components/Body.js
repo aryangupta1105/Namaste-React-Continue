@@ -4,6 +4,7 @@ import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import './Body.css';
+import LocationError from "./LocationError";
 import {API_KEY} from "../utils/Constants";
 
 const Body = () => {
@@ -135,7 +136,7 @@ const Body = () => {
             </Link>
           ))
         ) : (
-          <h2>No results found for your Location!</h2>
+          <LocationError></LocationError>
         )}
   
           

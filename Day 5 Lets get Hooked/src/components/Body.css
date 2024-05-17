@@ -5,6 +5,17 @@
     max-width: 1440px;
     margin: 0 auto;
 }
+.avatar{
+    border-radius: 25%;
+    border: 1px solid grey;
+    padding: 10px;
+    width: 200px;
+}
+.user-class-component{
+    width: fit-content;
+    border: 1px solid black;
+    padding: 20px 50px;
+}
 .Heading-body{
     font-family: cursive ;
     font-style: italic;
@@ -58,4 +69,16 @@ input::placeholder{
 .filter-btn
 {
     margin: 20px;
+}
+.location-error{
+    margin: 100px auto;
+    text-align: center;
+    
+}
+.location-error img{
+    width: 300px;
+}
+.location-error p{
+    width: 80%;
+    margin: 0 auto;
 }
