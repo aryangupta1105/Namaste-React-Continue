@@ -5,23 +5,14 @@ import './RestaurantMenu.css';
 import MenuInfoCard from "./MenuInfoCard";
 import MenuCarasouelCard from "./MenuCarasouelCard";
 import { CDN_URL } from "../utils/Constants";
-const RestaurantMenu = ()=>{
-    const [menuData , setMenuData] = useState(null);
+import useRestaurantMenu from "../utils/useRestaurantMenu";
 
+const RestaurantMenu = ()=>{
+    
     const {resId} = useParams();
     
-    useEffect(()=>{
-        fetchMenu();
-    }, []);
-    
-    const fetchMenu = async ()=>{
-        const data = await fetch("https://www.swiggy.com/dapi/menu/pl?page-type=REGULAR_MENU&complete-menu=true&lat=22.7195687&lng=75.8577258&restaurantId=" + resId + "&catalog_qa=undefined&isMenuUx4=true&submitAction=ENTER");
-        const json = await data.json();
+    const menuData = useRestaurantMenu(resId);
 
-        console.log(json);
-        setMenuData(json?.data);
-
-    }
     if (menuData === null) return <Shimmer />;
 
     const { cards } = menuData;

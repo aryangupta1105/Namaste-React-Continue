@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import './Body.css';
 import LocationError from "./LocationError";
 import {API_KEY} from "../utils/Constants";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 const Body = () => {
   const [listRestaurants, setListRestaurants] = useState([]);
@@ -22,6 +23,7 @@ const Body = () => {
     fetchData();
   }, [lat, long]);
 
+  const onlineStatus = useOnlineStatus();
   const getLocation = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(showPosition);
@@ -74,7 +76,8 @@ const Body = () => {
     }
     setLoading(false);
   };
-
+ 
+  
   if (loading) {
     return <Shimmer />;
   }
@@ -84,6 +87,7 @@ const Body = () => {
 
     return (
       <div className="body">
+            {!onlineStatus ? <h1>Looks like You're Offline. Please Check Internet</h1>: " "}
         <div className="main-container">
           <div className="top-container">
           <h1 className="Heading-body">
@@ -136,7 +140,7 @@ const Body = () => {
             </Link>
           ))
         ) : (
-          <LocationError></LocationError>
+          <LocationError ></LocationError>
         )}
   
           
