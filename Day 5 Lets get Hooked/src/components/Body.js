@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import RestaurantCard from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
-import './Body.css';
 import LocationError from "./LocationError";
 import {API_KEY} from "../utils/Constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
@@ -86,21 +85,21 @@ const Body = () => {
     console.log(listRestaurants);
 
     return (
-      <div className="body">
-            {!onlineStatus ? <h1>Looks like You're Offline. Please Check Internet</h1>: " "}
+      <div className="body p-4 mt-5  w-full max-w-[1440px] mx-auto">
+            {!onlineStatus ? <h1 className="mx-auto text-center text-red-500">Looks like You're Offline. Please Check Internet</h1>: " "}
         <div className="main-container">
-          <div className="top-container">
-          <h1 className="Heading-body">
+          <div className="top-container my-5 flex justify-between">
+          <h1 className="Heading-body text-[2rem] text-green-900 font-bold">
           {headingRestaurant} 
         </h1>
             {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
-          <div>
+          <div className="px-10">
             
-                <input type="text" name="search-city" placeholder="Search City " value={address} onChange={(e)=>{
+                <input type="text" name="search-city" placeholder="Search City " className="h-10 px-5 border border-black mr-5 rounded-lg focus:border-red-500" value={address} onChange={(e)=>{
                   setAddress(e.target.value);
                 }} />
                 {/* Adding search Button functionalities */}
-                <button className="search-btn" onClick={()=>{
+                <button className="search-btn hover:bg-green-700 bg-green-300 hover:text-white px-4 p-2 rounded-lg transition-all duration-300" onClick={()=>{
                   fetchLatLong();
                   
                 }} >Search🔍</button>
@@ -108,18 +107,18 @@ const Body = () => {
           </div>
           </div>
         
-        <div  className="search-container">
-              <input type="text" name="search-res" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
+        <div  className="search-container p-2">
+              <input type="text" name="search-res" className="h-10 w-[300px] px-5  border border-black mr-5 rounded-lg focus:border-red-500" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
                       setSearchValue(e.target.value);
                     }} />
                     {/* Adding search Button functionalities */}
-                    <button className="search-btn" onClick={()=>{
+                    <button className="search-btn hover:bg-green-700 bg-green-300 hover:text-white px-4 p-2 rounded-lg transition-all duration-300" onClick={()=>{
                       const filteredList = listRestaurants.filter((res)=> (res.info.name).toLowerCase().includes(searchValue.toLowerCase()) );
                       setFilteredRestaurants(filteredList);
                     }} >Search🔍</button>
 
         </div>
-        <button className="filter-btn" 
+        <button className="ml-2 filter-btn search-btn hover:bg-black hover:text-white px-4 p-2 rounded-xl border border-black transition-all duration-300" 
           onClick={() =>{ 
             const filteredList = filteredRestaurants.filter((res)=> res.info.avgRating > 4
           );
@@ -129,13 +128,16 @@ const Body = () => {
             Top Rated Restaurants
         </button>
         </div>
-        <div className="res-container">
+        <div className="res-container flex flex-wrap w-full mx-auto items-center">
           
           
-          {/* // * looping through the <RestaurentCard /> components Using Array.map() method */}
+          {/* // * looping through the <RestaurentCard /> components Using Array.map() method
+           */}
+
+         
           {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map((restaurant) => (
-            <Link className="res-card" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+            <Link className="res-card w-[300px] h-[400px] bg-[#f0f0f0] m-[20px] text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
               <RestaurantCard resData={restaurant} />
             </Link>
           ))

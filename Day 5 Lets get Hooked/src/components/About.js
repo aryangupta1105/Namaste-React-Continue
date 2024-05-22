@@ -1,5 +1,4 @@
 import UserClass from "./UserClass";
-import "./Body.css";
 import React from "react";
 import { json } from "react-router-dom";
 // const About = () =>{
