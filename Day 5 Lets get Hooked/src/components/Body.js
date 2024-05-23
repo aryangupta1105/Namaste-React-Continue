@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useEffect } from "react";
-import RestaurantCard from "./RestaurantCard";
+import RestaurantCard , {withRecommendedLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import LocationError from "./LocationError";
@@ -17,6 +17,7 @@ const Body = () => {
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
 
+  const RestaurantCardRecommended = withRecommendedLabel(RestaurantCard);
   // Fetch data when lat or long changes
   useEffect(() => {
     fetchData();
@@ -85,11 +86,11 @@ const Body = () => {
     console.log(listRestaurants);
 
     return (
-      <div className="body p-4 mt-5  w-full max-w-[1440px] mx-auto">
+      <div className="body px-8 p-4 mt-5  w-full max-w-[1440px] mx-auto">
             {!onlineStatus ? <h1 className="mx-auto text-center text-red-500">Looks like You're Offline. Please Check Internet</h1>: " "}
         <div className="main-container">
           <div className="top-container my-5 flex justify-between">
-          <h1 className="Heading-body text-[2rem] text-green-900 font-bold">
+          <h1 className="Heading-body  text-[2.5rem] text-green-900 font-bold">
           {headingRestaurant} 
         </h1>
             {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
@@ -137,8 +138,9 @@ const Body = () => {
          
           {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map((restaurant) => (
-            <Link className="res-card w-[300px] h-[400px] bg-[#f0f0f0] m-[20px] text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
-              <RestaurantCard resData={restaurant} />
+            
+            <Link className="res-card relative w-[300px] h-[400px] bg-[#f0f0f0] m-[20px] text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+              {restaurant.info.avgRating >= 4.5 || restaurant.info.sla.deliveryTime <= 20 ? <RestaurantCardRecommended resData={restaurant}></RestaurantCardRecommended> : <RestaurantCard resData={restaurant} />}
             </Link>
           ))
         ) : (
