@@ -1,7 +1,6 @@
 import { useEffect , useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
-import './RestaurantMenu.css';
 import MenuInfoCard from "./MenuInfoCard";
 import MenuCarasouelCard from "./MenuCarasouelCard";
 import { CDN_URL } from "../utils/Constants";
@@ -11,7 +10,7 @@ import MenuCardSection from "./MenuCardSection";
 const RestaurantMenu = ()=>{
     
     const {resId} = useParams();
-
+    const [showIndex , setShowIndex] = useState(0);
     // This is calling api to fetch the menu Data
     const menuData = useRestaurantMenu(resId);
 
@@ -52,7 +51,7 @@ const RestaurantMenu = ()=>{
             <div className="w-[1000px]">
                 <h1 className="text-[2rem] font-extrabold px-6">{name}</h1>
                 
-                <div className="p-5 bg-gradient-to-t from-gray-300 to-white rounded-3xl mb-10">
+                <div className="w-full p-4 bg-gradient-to-t from-gray-300 to-white rounded-3xl mb-10">
                     
                     <div className="Res-menu-data border border-gray-300 bg-white rounded-3xl py-10 px-6 font-bold text-lg font-serif flex flex-col gap-2">
 
@@ -74,8 +73,8 @@ const RestaurantMenu = ()=>{
             <div className="menu-container w-[1000px] flex flex-col gap-10">  
             {
                 
-                menuCard.map(newCard => (
-                    <MenuCardSection key={newCard.card.card.id} newCard={newCard}></MenuCardSection>
+                menuCard.map((newCard,index) => (
+                    <MenuCardSection key={newCard.card.card.title} newCard={newCard} showItems={index ===showIndex ?true : false} setShowIndex ={()=>setShowIndex(index)}></MenuCardSection>
                 )
                     )
             }

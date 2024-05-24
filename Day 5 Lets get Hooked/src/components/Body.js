@@ -129,7 +129,7 @@ const Body = () => {
             Top Rated Restaurants
         </button>
         </div>
-        <div className="res-container flex flex-wrap w-full mx-auto items-center">
+        <div className="res-container flex flex-wrap w-full mx-auto items-center justify-center">
           
           
           {/* // * looping through the <RestaurentCard /> components Using Array.map() method
