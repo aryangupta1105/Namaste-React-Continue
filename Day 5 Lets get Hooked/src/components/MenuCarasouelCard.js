@@ -14,8 +14,8 @@ const MenuCarasouelCard = (props) =>{
             <div className="flex justify-between my-5 flex-row-reverse items-center pb-5">
                 {/* image section */}
                 <div className="relative">
-                <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
-
+                {imageId? <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
+: <p className="w-[239px] rounded-3xl border" ></p>}
                 <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] rounded-3xl absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">Add</button>
 
                 </div>

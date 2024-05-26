@@ -1,4 +1,4 @@
-import { useEffect , useState } from "react";
+import { useContext, useEffect , useState } from "react";
 import Shimmer from "./Shimmer";
 import { useParams } from "react-router-dom";
 import MenuInfoCard from "./MenuInfoCard";
@@ -6,11 +6,12 @@ import MenuCarasouelCard from "./MenuCarasouelCard";
 import { CDN_URL } from "../utils/Constants";
 import useRestaurantMenu from "../utils/useRestaurantMenu";
 import MenuCardSection from "./MenuCardSection";
+import UserContext from "../utils/UserContext";
 
 const RestaurantMenu = ()=>{
     
     const {resId} = useParams();
-    const [showIndex , setShowIndex] = useState(0);
+    const [showIndex , setShowIndex] = useState(null);
     // This is calling api to fetch the menu Data
     const menuData = useRestaurantMenu(resId);
 
@@ -44,6 +45,8 @@ const RestaurantMenu = ()=>{
     console.log(menuCard);
 
 
+    const {userName} = useContext(UserContext);
+
 
     return menuData === null? <Shimmer></Shimmer> :(
         <div className="menu flex flex-col items-center justify-center w-[800px] max-w-[1440px] mx-auto mt-16">
@@ -63,6 +66,7 @@ const RestaurantMenu = ()=>{
                         <div className="w-3 bg-gray-300 h-3 rounded-full absolute left-0 bottom-2"></div>
                         <h2 className="outletHeading w-full  mb-5">Outlet <span className="ml-5 text-gray-500">{areaName}🔻</span></h2>
                         <h2>40-45 mins</h2>  
+                        <h2>{userName}</h2>  
                     </div>
 
                 </div>

@@ -1,8 +1,13 @@
+import { useContext } from "react";
 import { CDN_URL } from "../utils/Constants";
+import UserContext from "../utils/UserContext";
 
 const RestaurantCard = (props) => {
     const { resData } = props;
   
+    // Context using example
+    // const {userName} = useContext(UserContext);
+
     const {
       cloudinaryImageId,
       name,
@@ -64,6 +69,10 @@ const RestaurantCard = (props) => {
         <p>⭐{avgRating} stars - <span>{sla.slaString} minutes</span></p>
         <p>Cuisine: <span>{cuisines.join(', ')}</span></p>
         <p>Address: <span>{areaName}, {locality}</span></p>
+        
+        {/* using context for learning */}
+        {/* <h2>{userName}</h2>   */}
+
         </div>
       </div>
     );

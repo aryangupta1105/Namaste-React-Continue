@@ -4,11 +4,11 @@ import MenuCarasouelCard from "./MenuCarasouelCard";
 import MenuInfoCard from "./MenuInfoCard";
 import ItemList from "./ItemList";
 
-const MenuCardSection = ({newCard ,showItems ,setShowIndex})=>{
+const MenuCardSection = ({newCard ,showItems ,setShowIndex })=>{
         const [pointer , setPointer] = useState("🔽");
         const menuCard = document.querySelector(".menu-card");
         const handleClick = ()=>{
-            setShowIndex()
+            setShowIndex();
         }
 
     return (

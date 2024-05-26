@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useEffect } from "react";
 import RestaurantCard , {withRecommendedLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import LocationError from "./LocationError";
 import {API_KEY} from "../utils/Constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
+import UserContext from "../utils/UserContext";
 
 const Body = () => {
   const [listRestaurants, setListRestaurants] = useState([]);
@@ -76,8 +77,8 @@ const Body = () => {
     }
     setLoading(false);
   };
- 
-  
+
+  const{LoggedIn , setUserName } = useContext(UserContext);
   if (loading) {
     return <Shimmer />;
   }
@@ -128,8 +129,16 @@ const Body = () => {
           >
             Top Rated Restaurants
         </button>
+        
+        {/* updating context example */}
+        {/* <div>
+          <input type="text" name="search-city" placeholder="user name " className="h-10 px-5 border border-black mr-5 rounded-lg focus:border-red-500" value={LoggedIn} onChange={(e)=>{
+                    setUserName(e.target.value);
+                  }} />
+        </div> */}
+
         </div>
-        <div className="res-container flex flex-wrap w-full mx-auto items-center justify-center">
+        <div className="res-container flex flex-wrap w-full mx-auto items-center justify-start">
           
           
           {/* // * looping through the <RestaurentCard /> components Using Array.map() method

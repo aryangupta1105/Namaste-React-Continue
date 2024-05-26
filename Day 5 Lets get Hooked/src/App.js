@@ -1,4 +1,4 @@
-import React , {lazy , Suspense} from 'react';
+import React , {lazy , Suspense, useEffect, useState} from 'react';
 import ReactDOM from 'react-dom/client';
 import Header from "./components/Header";
 import Body from "./components/Body";
@@ -11,18 +11,36 @@ import Cart  from './components/Cart';
 import { Form } from 'react-router-dom';
 import RestaurantMenu from './components/RestaurantMenu';
 import Shimmer from './components/Shimmer';
-
+import UserContext from './utils/UserContext';
 
 const Grocery = lazy(()=> import("./components/Grocery"));
 
+
+
+
 const AppLayout = () => {
+
+  //This is how we update the usercontext:
+
+  // const[userName , setUserName] = useState();
+  // useEffect(()=>{
+  //   const data = {
+  //     name: "Aryan Gupta" ,
+  //   }
+  //   setUserName(data.name);
+  // },[]);
   return (
-    <div className="app"> 
-      <Header />
-      {/* Whenever there is a change in path the outlet will be changed according to the route */}
-      <Outlet/>
-      <Footer/>
-    </div>
+    
+    // Providing date to context...
+    // <UserContext.Provider value={{LoggedIn : userName , setUserName}}>
+      
+        <div className="app">    <Header />
+          {/* Whenever there is a change in path the outlet will be changed according to the route */}
+      
+          <Outlet/>
+          <Footer/>
+      </div>
+    // </UserContext.Provider>
   );
 };
 
