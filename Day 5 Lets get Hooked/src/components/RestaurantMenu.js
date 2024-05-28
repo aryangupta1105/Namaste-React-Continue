@@ -45,7 +45,6 @@ const RestaurantMenu = ()=>{
     console.log(menuCard);
 
 
-    const {userName} = useContext(UserContext);
 
 
     return menuData === null? <Shimmer></Shimmer> :(
@@ -66,7 +65,6 @@ const RestaurantMenu = ()=>{
                         <div className="w-3 bg-gray-300 h-3 rounded-full absolute left-0 bottom-2"></div>
                         <h2 className="outletHeading w-full  mb-5">Outlet <span className="ml-5 text-gray-500">{areaName}🔻</span></h2>
                         <h2>40-45 mins</h2>  
-                        <h2>{userName}</h2>  
                     </div>
 
                 </div>
@@ -78,7 +76,7 @@ const RestaurantMenu = ()=>{
             {
                 
                 menuCard.map((newCard,index) => (
-                    <MenuCardSection key={newCard.card.card.title} newCard={newCard} showItems={index ===showIndex ?true : false} setShowIndex ={()=>setShowIndex(index)}></MenuCardSection>
+                    <MenuCardSection key={newCard.card.card.title} newCard={newCard} showItems={index ===showIndex ?true : false} setShowIndex ={()=>setShowIndex(index)} ></MenuCardSection>
                 )
                     )
             }

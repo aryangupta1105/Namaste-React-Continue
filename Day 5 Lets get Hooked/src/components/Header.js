@@ -3,13 +3,15 @@ import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
 import Grocery from "./Grocery";
 import UserContext from "../utils/UserContext";
+import { useSelector } from "react-redux";
 const Header = () => {
   const btnName = "Log In";
   const [buttonName , setBtnName] = useState(btnName);
 
+  // Redux using : 
+  const cartItems = useSelector((store) => store.cart.items);
   // context using example
   const {LoggedIn} = useContext(UserContext);
-  console.log(LoggedIn);
   
     return (
       <div className="header w-full mx-auto max-w-[1440px] flex justify-between px-10 font-bold items-center py-4 shadow-xlrelative bg-white text-gray-600 ">
@@ -44,7 +46,7 @@ const Header = () => {
               <div className="w-0 h-[1px] bg-black group-hover:w-full transition-all duration-200"></div>
             </Link></li>
             <li className="group"><Link to="/cart">
-              <p>🛒Cart</p>
+              <p className="font-extrabold text-xl">🛒Cart ({cartItems.length} items)</p>
               <div className="w-0 h-[1px] bg-black group-hover:w-full transition-all duration-200"></div>
             </Link></li> 
 

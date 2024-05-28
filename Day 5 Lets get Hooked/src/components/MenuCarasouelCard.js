@@ -1,3 +1,6 @@
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
+
 const MenuCarasouelCard = (props) =>{
     const {MenuData} = props;
     const{
@@ -8,6 +11,16 @@ const MenuCarasouelCard = (props) =>{
         description,
         isVeg
     } = MenuData.dish.info;
+
+
+    const dispatch = useDispatch();
+
+
+    const handleCartItem = (item)=>{
+        dispatch(addItem(item));
+        console.log(item);
+    }
+
     
     return (
         <li className="w-full border-b border-t-gray-300">
@@ -16,8 +29,9 @@ const MenuCarasouelCard = (props) =>{
                 <div className="relative">
                 {imageId? <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
 : <p className="w-[239px] rounded-3xl border" ></p>}
-                <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] rounded-3xl absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">Add</button>
-
+                
+                <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>handleCartItem(MenuData)}>Add
+                    </button>
                 </div>
 
 

@@ -13,6 +13,10 @@ import RestaurantMenu from './components/RestaurantMenu';
 import Shimmer from './components/Shimmer';
 import UserContext from './utils/UserContext';
 
+// redux files...
+import {Provider} from 'react-redux';
+import appStore from './utils/appStore';
+
 const Grocery = lazy(()=> import("./components/Grocery"));
 
 
@@ -31,16 +35,19 @@ const AppLayout = () => {
   // },[]);
   return (
     
-    // Providing date to context...
-    // <UserContext.Provider value={{LoggedIn : userName , setUserName}}>
-      
+    
+    <Provider store={appStore}>
+      {/* // Providing date to context... 
+      <UserContext.Provider value={{LoggedIn : userName , setUserName}}>
+      */}
         <div className="app">    <Header />
           {/* Whenever there is a change in path the outlet will be changed according to the route */}
       
           <Outlet/>
           <Footer/>
       </div>
-    // </UserContext.Provider>
+    {/* // </UserContext.Provider> */}
+    </Provider>
   );
 };
 

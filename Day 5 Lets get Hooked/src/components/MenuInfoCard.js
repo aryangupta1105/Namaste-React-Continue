@@ -1,4 +1,6 @@
-
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { addItem } from "../utils/cartSlice";
 
 const MenuInfoCard = (props) =>{
     const {MenuData} = props;
@@ -10,16 +12,30 @@ const MenuInfoCard = (props) =>{
         description,
         isVeg
     } = MenuData.card.info;
-    console.log(MenuData);
-    return (
-        <li className="w-full my-5 border-t border-t-gray-300">
-            <div className="flex flex-row-reverse mt-5 items-center justify-between">
-            <div className="relative">
-            {imageId? <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
-: <p className="w-[239px] rounded-3xl border" ></p>}
-                <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">Add</button>
 
+    const dispatch = useDispatch();
+
+
+    const handleCartItem = (item)=>{
+        dispatch(addItem(item));
+        console.log(item);
+    }
+
+
+    return (
+        <li className="w-full my-5 border-t border-t-gray-300 ">
+            <div className="flex flex-row-reverse mt-5 items-center justify-between ">
+            <div className="relative ">
+                {imageId? <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
+    : <p className="w-[239px] rounded-3xl border" ></p>}
+                <div className="absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">
+                    <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>handleCartItem(MenuData)}>Add
+                    </button>
                 </div>
+                
+                
+                
+            </div>
 
 
                 <div className="w-9/12">

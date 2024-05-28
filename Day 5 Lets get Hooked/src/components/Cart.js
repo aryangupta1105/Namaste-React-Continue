@@ -1,39 +1,14 @@
-import RestaurantCard from "./RestaurantCard";
+import { useSelector } from "react-redux";
+import ItemList from "./ItemList";
+
 const Cart = ()=>{
+    const cartItem = useSelector((store)=> store.cart.items);
+
+    console.log("CartItem: " );
+    console.log( cartItem);
     return(
         <div>
-            <h1>
-                This is The Cart Page..
-            </h1>
-            <div className="shimmer-container">
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            <div className="shimmer-card">
-                <h1>Order 1</h1>
-            </div>
-            </div>
+            <ItemList newCard={cartItem}></ItemList>
         </div>
     )
 }
