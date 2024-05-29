@@ -30,9 +30,11 @@ const MenuCarasouelCard = (props) =>{
                 {imageId? <img className="w-[239px] rounded-3xl border" src={"https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_auto,q_auto,w_292,h_300/" +imageId} alt={name}></img>
 : <p className="w-[239px] rounded-3xl border" ></p>}
                 
-                <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>handleCartItem(MenuData)}>Add
+                <div className="absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">
+                    <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>handleCartItem(MenuData)}>Add
                     </button>
                 </div>
+            </div>
 
 
                 <div className="w-9/12">
