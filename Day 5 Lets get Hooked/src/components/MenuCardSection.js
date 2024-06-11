@@ -12,7 +12,7 @@ const MenuCardSection = ({newCard ,showItems ,setShowIndex })=>{
         }
 
     return (
-            <div className="menu-card-container flex flex-col gap-10 " key={newCard.card.card.id}>
+            <div data-testid="menuItemList" className="menu-card-container flex flex-col gap-10 " key={newCard.card.card.id}>
                 {/* newCard is the card like recommended etc.  from the list of menuCards */}
                 {/* Accordion */}
                 <div className="w-full bg-gray-100 shadow-lg  p-2 px-4 "> 

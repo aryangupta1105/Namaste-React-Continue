@@ -14,7 +14,7 @@ class UserClass extends React.Component{
     async componentDidMount(){
         const data = await fetch('https://api.github.com/users/aryangupta1105');
         const json = await data.json();
-
+        console.log(json);
         this.setState({
             jsonData : json,
             isLoading: false
@@ -23,31 +23,30 @@ class UserClass extends React.Component{
     
     
     render(){
-        const {name , location,bio , html_url, followers , following , avatar_url } = this.state.jsonData;
+        const {name , location,bio , html_url, followers ,followers_url , following_url, following , avatar_url , company} = this.state.jsonData;
         const{isLoading} = this.state;
         if(isLoading) return <Shimmer/>;
         return(
-           <div className="user-class-component ">
-                <a href={html_url} className="">
-                    <div className="w-[700px] bg-blue-200 border-yellow-400 shadow-lg mx-auto border flex-col flex gap-5  rounded-lg p-5">
-                        <div className="flex justify-between items-center">
-                            {/* <UserContext.Consumer>
-                                {({userName})=>
-                            <h2 className=" w-[50%] text-[2.5rem] font-bold ">{userName}</h2>
-                            }
-                            </UserContext.Consumer> */}
-                            <h2 className=" w-[50%] text-[2.5rem] font-bold ">{name}</h2>
-                            <img src={avatar_url} className="avatar rounded-lg border w-[200px]"></img>
+           <div className="user-class-component w-[90%] px-6 my-10 flex mx-auto justify-center">
+                
+                {/* left part */}
+                  <div className="w-6/12 flex flex-col ">
+                        <h1 className="text-[2rem] font-extrabold text-blue-500">{name}</h1>
+                        <h2 className="font-bold mt-3 text-lg">{location}</h2>
+                        <p className="text-gray-500 w-10/12">{bio}</p>
+
+                        <div className="flex justify-between pr-10 mt-5">
+                            <p>Followers: <a href={followers_url}>{followers}</a></p>
+                            <p>Following: <a href={following_url}>{following}</a></p>
                         </div>
-                        <h2 className="font-bold text-[2rem]">{location}</h2>
-                        <hr></hr>
-                        <p className=" text-gray-500"><span className="text-black font-bold text-[1.5rem]">Bio:</span> "{bio}"</p>
-                    <div className="flex justify-between">
-                    <h3>Followers: <span>{followers}</span></h3>
-                        <h3>Following: <span>{following}</span></h3>
-                    </div>
-                    </div>
-                </a>
+
+                        <h3 className="mt-5 w-10/12">Company: Student @{company}</h3>
+                  </div>
+
+                  <div className="w-6/12">
+                        <img src={avatar_url} className="h-[70%] border rounded-lg"></img>
+                  </div>
+               
            </div>
         )
     }

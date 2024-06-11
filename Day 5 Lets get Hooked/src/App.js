@@ -40,7 +40,8 @@ const AppLayout = () => {
       {/* // Providing date to context... 
       <UserContext.Provider value={{LoggedIn : userName , setUserName}}>
       */}
-        <div className="app">    <Header />
+        <div className="app">    
+          <Header />
           {/* Whenever there is a change in path the outlet will be changed according to the route */}
       
           <Outlet/>

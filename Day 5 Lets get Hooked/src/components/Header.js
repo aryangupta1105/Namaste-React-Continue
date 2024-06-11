@@ -14,7 +14,7 @@ const Header = () => {
   const {LoggedIn} = useContext(UserContext);
   
     return (
-      <div className="header w-full mx-auto max-w-[1440px] flex justify-between px-10 font-bold items-center py-4 shadow-xlrelative bg-white text-gray-600 ">
+      <div className="header w-full mx-auto max-w-[1440px] flex justify-between px-10 font-bold items-center  shadow-xlrelative bg-white text-gray-600 ">
         <div className="logo-container relative w-[130px]">
           <img 
             src={"https://th.bing.com/th/id/OIP.Wuvdo65dj7ghMoYmCtCCGgHaHa?rs=1&pid=ImgDetMain"}

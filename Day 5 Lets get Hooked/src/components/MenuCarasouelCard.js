@@ -1,5 +1,6 @@
 import { useDispatch } from "react-redux";
 import { addItem } from "../utils/cartSlice";
+import { useState } from "react";
 
 const MenuCarasouelCard = (props) =>{
     const {MenuData} = props;
@@ -12,18 +13,19 @@ const MenuCarasouelCard = (props) =>{
         isVeg
     } = MenuData.dish.info;
 
-
+    
     const dispatch = useDispatch();
 
 
     const handleCartItem = (item)=>{
+
         dispatch(addItem(item));
         console.log(item);
     }
 
     
     return (
-        <li className="w-full border-b border-t-gray-300">
+        <li data-testid="menuCard" className="w-full border-b border-t-gray-300">
             <div className="flex justify-between my-5 flex-row-reverse items-center pb-5">
                 {/* image section */}
                 <div className="relative">
@@ -31,8 +33,10 @@ const MenuCarasouelCard = (props) =>{
 : <p className="w-[239px] rounded-3xl border" ></p>}
                 
                 <div className="absolute -bottom-5 font-bold text-[1.5rem] left-[30%]">
-                    <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>handleCartItem(MenuData)}>Add
+                    <button className="p-2 rounded-lg bg-white text-green-700 border w-[100px] " onClick={() =>{handleCartItem(MenuData);}
+                    }>Add
                     </button>
+                    
                 </div>
             </div>
 

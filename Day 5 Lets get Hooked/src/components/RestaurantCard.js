@@ -7,7 +7,7 @@ const RestaurantCard = (props) => {
   
     // Context using example
     // const {userName} = useContext(UserContext);
-
+    console.log(resData);
     const {
       cloudinaryImageId,
       name,
@@ -41,7 +41,7 @@ const RestaurantCard = (props) => {
                   scale: 0.9;
             }
        */
-      <div className="res-content flex flex-col gap-[10px]" >
+      <div data-testid="resCard" className="res-content flex flex-col gap-[10px]" >
         <img
           className="res-logo w-full h-[233px] rounded-lg"
           // src={
@@ -89,6 +89,34 @@ export const withRecommendedLabel = (RestaurantCard)=>{
         )
       }
   }
+
+export const RestaurantChainCard = (props) => {
+  const { resData } = props;
+
+  const {
+    cloudinaryImageId,
+    name,
+    avgRating,
+    sla,
+    areaName,
+  } = resData?.info;
+
+  return (
+    <div className="res-content w-[280px] h-[300px] flex flex-col gap-4 mb-5">
+      <img
+        className="res-logo rounded-lg w-[280px] h-[200px] shadow-inner" 
+        src={CDN_URL + cloudinaryImageId}
+        alt={name + " image"}
+      />
+      
+      <div className="p-2">
+        <h3 className="text-lg font-bold text-gray-700">{name}</h3>
+        <p className="text-gray-600">⭐ {" " + avgRating} stars ~ <span>{sla.slaString} minutes</span></p>
+        <p className="text-gray-500">🛑{areaName}</p>
+      </div>
+    </div>
+  );
+};
   
 
 export default RestaurantCard;

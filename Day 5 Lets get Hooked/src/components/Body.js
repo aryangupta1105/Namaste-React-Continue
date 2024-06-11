@@ -1,28 +1,43 @@
 import { useContext, useState } from "react";
-import { useEffect } from "react";
-import RestaurantCard , {withRecommendedLabel} from "./RestaurantCard";
+import RestaurantCard , {RestaurantChainCard, withRecommendedLabel} from "./RestaurantCard";
 import Shimmer from "./Shimmer";
 import { Link } from "react-router-dom";
 import LocationError from "./LocationError";
 import {API_KEY} from "../utils/Constants";
 import useOnlineStatus from "../utils/useOnlineStatus";
 import UserContext from "../utils/UserContext";
+import useFoodDeliveryData from "../utils/useFoodDeliveryData";
+import TopFoodCard from "./TopFoodCard";
+import Loader from "./Loader";
 
 const Body = () => {
-  const [listRestaurants, setListRestaurants] = useState([]);
+  
+  const [topFoodData , setTopFoodData] = useState([]);
+  const[topfoodHeading , setTopFoodHeading] = useState("Try some of the best!");
+
+  // middle section data:
+  const [restaurantChains , setRestaurantsChains] = useState([]);
+
   const [filteredRestaurants, setFilteredRestaurants] = useState([]);
+  
   const [searchValue, setSearchValue] = useState("");
-  const [headingRestaurant, setHeadingRestaurant] = useState("Top Restaurant Chains");
+
+  const [foodDeliveryHeading, setfoodDeliveryHeading] = useState("Top Restaurant Chains");
+
+  const [restaurantsChainsHeading , setRestaurantsChainsHeading] = useState("Top Restaurant Chains");
+  
+  // for location api
   const [lat, setLat] = useState();
   const [long, setLong] = useState();
   const [address, setAddress] = useState("");
   const [loading, setLoading] = useState(true);
+  
 
+// I created a custom hook for this fetching restaurant data:
+  const deliveryData = useFoodDeliveryData(lat , long , setLoading, setFilteredRestaurants, setfoodDeliveryHeading ,setTopFoodData , setTopFoodHeading , setRestaurantsChains , setRestaurantsChainsHeading) ;
+  
+  
   const RestaurantCardRecommended = withRecommendedLabel(RestaurantCard);
-  // Fetch data when lat or long changes
-  useEffect(() => {
-    fetchData();
-  }, [lat, long]);
 
   const onlineStatus = useOnlineStatus();
   const getLocation = () => {
@@ -60,75 +75,108 @@ const Body = () => {
     }
   };
 
-  const fetchData = async () => {
-    setLoading(true);
-    try {
-      const response = await fetch(
-        `https://www.swiggy.com/dapi/restaurants/list/v5?lat=${lat}&lng=${long}&is-seo-homepage-enabled=true&page_type=DESKTOP_WEB_LISTING`
-      );
-      const json = await response.json();
-      const newData = json?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants || [];
-      console.log(json?.data);
-      setHeadingRestaurant(json?.data?.cards[1]?.card?.card?.header?.title || "Top Restaurant Chains");
-      setListRestaurants(newData);
-      setFilteredRestaurants(newData);
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-    setLoading(false);
-  };
+  
 
   const{LoggedIn , setUserName } = useContext(UserContext);
   if (loading) {
-    return <Shimmer />;
+    return (
+      <div>
+        <Loader></Loader>
+        <Shimmer />
+      </div>
+    );
   }
-    console.log("body rendering");
 
-    console.log(listRestaurants);
 
     return (
-      <div className="body px-8 p-4 mt-5  w-full max-w-[1440px] mx-auto">
+      <div className="body px-20 w-full max-w-[1440px] mx-auto">
             {!onlineStatus ? <h1 className="mx-auto text-center text-red-500">Looks like You're Offline. Please Check Internet</h1>: " "}
         <div className="main-container">
-          <div className="top-container my-5 flex justify-between">
-          <h1 className="Heading-body  text-[2.5rem] text-green-900 font-bold">
-          {headingRestaurant} 
-        </h1>
-            {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
-          <div className="px-10">
-            
-                <input type="text" name="search-city" placeholder="Search City " className="h-10 px-5 border border-black mr-5 rounded-lg focus:border-red-500" value={address} onChange={(e)=>{
-                  setAddress(e.target.value);
-                }} />
-                {/* Adding search Button functionalities */}
-                <button className="search-btn hover:bg-green-700 bg-green-300 hover:text-white px-4 p-2 rounded-lg transition-all duration-300" onClick={()=>{
-                  fetchLatLong();
-                  
-                }} >Search🔍</button>
+        <div  className="search-container flex justify-end py-4 px-6">
+          {/* Search by City name container */}
+            <div>
               
-          </div>
-          </div>
+              <input type="text" name="search-city" placeholder="Search City " className="h-10 px-5 border border-black mr-2 rounded-lg focus:border-red-500" value={address} onChange={(e)=>{
+                setAddress(e.target.value);
+              }} />
+              {/* Adding search Button functionalities */}
+              <button className="search-btn hover:bg-green-700 bg-green-300 hover:text-white px-4 p-2 rounded-lg transition-all duration-300" onClick={()=>{
+                fetchLatLong();
+                
+              }} >Search🔍..</button>
+            
+            </div>
+        </div>
+
+        {/* Top Food Container */}
+          <div className="px-4 mt-5">
+            {topFoodData && topFoodData.length>0?(
+              <div>
+                  <h1 className="font-bold text-[1.5rem] px-4 ">{topfoodHeading}</h1>
+                    <div className="w-[1240px] h-[230px] mx-auto overflow-scroll overflow-y-hidden flex gap-10  hide-scrollbar top-food-container border-b mt-5 rounded-xl">
+                      {
+                        topFoodData.map((food) => (
+                          <TopFoodCard key={food.id} topFoodData={food} />
+                        ))
+                      }
+                    </div>
+                </div>
+            ):null}
+            </div> 
+
+          <div className="mt-10">
+            {restaurantChains && restaurantChains.length>0?(
+              <div>
+                  <h1 className="font-bold text-[1.5rem] px-4 ">{restaurantsChainsHeading}</h1>
+                    <div className="w-[1240px] mx-auto overflow-scroll overflow-y-hidden flex hide-scrollbar gap-5 px-4 top-food-container border-b mt-5 rounded-xl">
+                      {
+                        restaurantChains.map((restaurant) => (
+                          <Link className="res-card relative text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+                            <RestaurantChainCard resData={restaurant}/>
+            </Link>
+                        ))
+                      }
+                    </div>
+                </div>
+            ):null}
+            </div>
+    
+
+          <div className="online-food-container my-5 flex flex-col pt-10 px-4">
+            <h1 className="Heading-body  text-[1.5rem] font-extrabold my-5">
+            {foodDeliveryHeading} 
+            </h1>
+              {/* Here the body is rendering every time the value updates (which is the property of useState variable/hook) */}
+          
         
-        <div  className="search-container p-2">
-              <input type="text" name="search-res" className="h-10 w-[300px] px-5  border border-black mr-5 rounded-lg focus:border-red-500" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
+        
+         {/* Search by Restaurant container */}
+         <div className="flex justify-between ">
+
+          {/* Filtering Top Rated Restaurants */}
+            <button data-testid="filterBtn" className="filter-btn search-btn hover:bg-black hover:text-white px-6 p-2 rounded-xl border border-black transition-all duration-300" 
+              onClick={() =>{ 
+                const filteredList = filteredRestaurants.filter((res)=> res.info.avgRating > 4
+              );
+                setFilteredRestaurants(filteredList);
+                }}
+              >
+                Top Rated Restaurants
+            </button>
+
+                {/* Search by Restaurant Name container */}
+              
+              <div>
+              <input data-testid="searchByRestaurant" type="text" name="search-res" className="h-10 w-[300px] px-5  border border-black mr-3 rounded-lg focus:border-red-500" placeholder="Search Food or Restaurant" value={searchValue} onChange={(e)=>{
                       setSearchValue(e.target.value);
                     }} />
                     {/* Adding search Button functionalities */}
                     <button className="search-btn hover:bg-green-700 bg-green-300 hover:text-white px-4 p-2 rounded-lg transition-all duration-300" onClick={()=>{
-                      const filteredList = listRestaurants.filter((res)=> (res.info.name).toLowerCase().includes(searchValue.toLowerCase()) );
+                      const filteredList = deliveryData.filter((res)=> (res.info.name).toLowerCase().includes(searchValue.toLowerCase()) );
                       setFilteredRestaurants(filteredList);
                     }} >Search🔍</button>
-
-        </div>
-        <button className="ml-2 filter-btn search-btn hover:bg-black hover:text-white px-4 p-2 rounded-xl border border-black transition-all duration-300" 
-          onClick={() =>{ 
-            const filteredList = filteredRestaurants.filter((res)=> res.info.avgRating > 4
-          );
-            setFilteredRestaurants(filteredList);
-            }}
-          >
-            Top Rated Restaurants
-        </button>
+              </div>
+            </div>
         
         {/* updating context example */}
         {/* <div>
@@ -138,7 +186,9 @@ const Body = () => {
         </div> */}
 
         </div>
-        <div className="res-container flex flex-wrap w-full mx-auto items-center justify-start">
+
+        {/* Food Delivery Container */}
+        <div className="res-container flex flex-wrap w-full mx-auto px-4 items-center my-10 gap-8">
           
           
           {/* // * looping through the <RestaurentCard /> components Using Array.map() method
@@ -148,7 +198,7 @@ const Body = () => {
           {filteredRestaurants.length > 0 ? (
           filteredRestaurants.map((restaurant) => (
             
-            <Link className="res-card relative w-[300px] h-[400px] bg-[#f0f0f0] m-[20px] text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
+            <Link className="res-card relative w-[280px] h-[400px] bg-[#f0f0f0] text-sm font-bold transition-all ease-in-out duration-200 hover:cursor-pointer hover:scale-90" key={restaurant.info.id} to={"/restaurants/" + restaurant.info.id}>
               {restaurant.info.avgRating >= 4.5 || restaurant.info.sla.deliveryTime <= 20 ? <RestaurantCardRecommended resData={restaurant}></RestaurantCardRecommended> : <RestaurantCard resData={restaurant} />}
             </Link>
           ))
@@ -157,6 +207,7 @@ const Body = () => {
         )}
   
           
+        </div>
         </div>
       </div>
     );

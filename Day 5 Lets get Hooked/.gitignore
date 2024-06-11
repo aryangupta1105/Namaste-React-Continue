@@ -4,3 +4,4 @@
 /package-lock.json
 /jest.config.js
 /tailwind.config.js
+/coverage/*
